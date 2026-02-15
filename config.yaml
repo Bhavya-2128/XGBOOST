@@ -1,0 +1,58 @@
+# ── Paths ──────────────────────────────────────────────────────────────────
+paths:
+  raw_data:      data/raw_data.csv
+  sample_data:   data/sample_data.csv
+  models_dir:    outputs/models/
+  plots_dir:     outputs/plots/
+  database_dir:  outputs/database/
+  reports_dir:   outputs/reports/
+  logs_dir:      logs/
+
+# ── Physics thresholds ─────────────────────────────────────────────────────
+physics:
+  Re_min:          1000          # minimum Re to include
+  Re_max:          1000000       # maximum Re (1e6)
+  LD_min:          1.0           # minimum L/D
+  LD_max:          6.0           # maximum L/D
+  alpha_min:       0.0           # angle of attack (degrees) min
+  alpha_max:       45.0          # angle of attack max
+  TI_max_St:       1.0           # % — exclude St data above this TI
+  Re_drag_crisis:  400000        # approximate drag-crisis Reynolds number (4e5)
+  LD_cr_subcrit:   [3.0, 4.0]   # (L/D)cr range for subcritical regime
+  LD_cr_supercrit: [1.5, 2.0]   # (L/D)cr range for supercritical regime
+  bistable_LD_ranges:            # L/D windows showing bi-stable behaviour
+    - [1.0, 2.0]
+    - [3.0, 5.0]
+
+# ── Data split ─────────────────────────────────────────────────────────────
+data:
+  test_ratio:   0.10             # 10 % held out for testing
+  random_seed:  42
+  cv_folds:     5
+
+# ── XGBoost hyperparameter search grid ─────────────────────────────────────
+hyperparams:
+  n_estimators:  [20, 50, 100, 200]
+  max_depth:     [2, 4, 6, 8, 10]
+  learning_rate: [0.05, 0.1, 0.2]
+  subsample:     [0.8, 1.0]
+  colsample_bytree: [0.8, 1.0]
+  reg_lambda:    [1, 2, 5]       # L2 regularisation
+
+# ── Database grid resolution ───────────────────────────────────────────────
+database:
+  Re_points:    50               # log-spaced points in Re
+  LD_points:    25               # linear-spaced points in L/D
+  alpha_points: 10               # linear-spaced angle-of-attack points
+
+# ── Smoothing ──────────────────────────────────────────────────────────────
+smoothing:
+  apply_median_filter: true
+  window_size:         5
+
+# ── Targets to model ───────────────────────────────────────────────────────
+targets:
+  - CD1
+  - CD2
+  - CL
+  - St
